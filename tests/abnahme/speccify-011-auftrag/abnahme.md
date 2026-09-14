@@ -8,7 +8,7 @@
 | Ohne Terminal: keine Eingabe, Meldung „Kein Agent-Terminal bereit“, „Kopieren“ und „Terminal starten“; nach dem Start „bereit“ | Stufe 2 `…::test_ohne_terminal_keine_zustellung_und_start_aus_dem_dialog` · Stufe 0 |
 | Einfügen: Meldung „Eingefügt — im Terminal mit Enter absenden“, Text liegt als ein Block in der Eingabezeile (Shell ganz, Claude Code als „Pasted text“), keine Escape-Reste, nichts abgeschickt | Stufe 2 `…::test_zustellung_ist_ein_block_ohne_enter` · Stufe 0 (Bracketed-Paste-Rahmen ohne `\r`) |
 | Kopieren legt genau den Vorschautext in die Zwischenablage | Stufe 2 `…::test_kopieren_legt_die_vorschau_in_die_zwischenablage` |
-| Geänderte Datei ohne Auswahlwechsel: Hinweis „seit der Auswahl geändert“ und neuer Inhalt | Stufe 2 `…::test_geaenderte_datei_zeigt_hinweis_und_neuen_inhalt` · Stufe 0 |
+| Geänderte Datei ohne Auswahlwechsel: Vorschau zeigt den neuen Inhalt (Stufe 2); der Hinweis „seit der Auswahl geändert“ nur ohne Watcher sichtbar (Stufe 0) | Stufe 2 `…::test_geaenderte_datei_zeigt_den_neuen_inhalt` · Stufe 0 |
 | Terminal kommt sichtbar nach vorn; Claude beginnt nach Enter mit dem Auftrag | Checkliste 1 (Optik, echter Agentenlauf) |
 | „Nur Shell“: zsh zeigt den mehrzeiligen Text, führt nichts aus | Checkliste 2 (Shell-Modus hängt von der Agent-Einstellung des Fensters ab) |
 

@@ -3,7 +3,7 @@ station: Doing
 order: 3
 created: 2026-09-14
 needs_human: true
-ready: false
+ready: true
 open_question: null
 parent: null
 ---
@@ -42,12 +42,20 @@ Abnahme 011 bekommt Stufe-2-Tests, die Checkliste schrumpft.
       Speccify Spec 039, Vertrag in `docs/qa-bridge.md` dort.
 - [x] Adapter und Page-Objects hier.
       `speccify_qa/bridge.py`, `speccify_qa/pages.py`, Fixtures `bridge`/`app`/`speccify_window`.
-- [ ] Abnahme 011 auf Stufe 2 heben; Kennzahl vorher/nachher.
-      Fünf Tests in `test_auftrag_app.py`, Checkliste auf zwei Schritte gekürzt; Lauf gegen die App steht aus (Systemdialog).
+- [x] Abnahme 011 auf Stufe 2 heben; Kennzahl vorher/nachher.
+      Fünf Tests in `test_auftrag_app.py`, Checkliste von fünf auf zwei Schritte;
+      Lauf: 6/6 grün in ~4 s (vorher: fünf manuelle Klickschritte).
 
 ## Verification
 
-Noch nichts geprüft.
+2026-09-14: `abnahme run speccify-011-auftrag` gegen die gebündelte App mit
+`--qa-bridge=18769`: 6 passed (fünf Stufe 2, einer Stufe 0), zweimal in Folge,
+Laufzeit ~4 s. Brücke ohne Token 401, Hauptthread-Blockade (macOS-Dialog) als
+503 sichtbar. Werkzeug-Befunde behoben: nur sichtbare Elemente, Inspektor-Tab
+zurückschalten, Karte nicht doppelt klicken (abwählen), Fenster ohne Warten
+schließen, umgebrochene Terminalzeilen (Speccify-Haken). Produkt-Befund
+F-QA-1 in Speccify Spec 011: Zustellung in Claudes Trust-Dialog geht verloren.
+Screenshot aus dem App-Prozess braucht die Freigabe „Bildschirmaufnahme“.
 
 ## Questions
 

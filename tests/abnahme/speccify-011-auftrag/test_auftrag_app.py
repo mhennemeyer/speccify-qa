@@ -22,12 +22,27 @@ QA_ROOT = Path(__file__).resolve().parents[3]
 
 @pytest.fixture(scope="module")
 def zweites_fenster(app: App):
-    """Projektfenster ohne Terminal (dieses Repo); am Ende schließen."""
+    """Projektfenster ohne Terminal (dieses Repo), Terminal als reine Shell.
+
+    Der Agent-Befehl des Fensters ist eine UI-Präferenz in localStorage
+    (geteilt zwischen den Fenstern); leer heißt „Nur Shell“ — so landet die
+    Zustellung in zsh und ist im Puffer vollständig lesbar. Ein schon offenes
+    QA-Fenster wird vorher geschlossen; am Ende wird beides zurückgesetzt.
+    """
+    existing = app.project_window(QA_ROOT)
+    if existing:
+        app.close_window(existing.label)
+    key = f"speccify.project.agentCommand:{QA_ROOT}"
+    app.bridge.eval("main", f"localStorage.setItem({key!r}, ''); return true;")
     window = app.open_project(QA_ROOT)
-    if window.terminal.ready():
-        pytest.skip("Im QA-Projektfenster läuft schon ein Terminal — bitte schließen.")
+    assert not window.terminal.ready()
     yield window
-    window.bridge.invoke(window.label, "plugin:window|close")
+    app.close_window(window.label)
+    app.bridge.eval("main", f"localStorage.removeItem({key!r}); return true;")
+
+
+def _kompakt(text: str) -> str:
+    return "".join(text.split())
 
 
 def _erste_doing_karte(window: ProjectWindow) -> str:
@@ -91,17 +106,27 @@ def test_zustellung_ist_ein_block_ohne_enter(zweites_fenster: ProjectWindow) -> 
     status = dialog.insert_into_terminal()
     assert status.startswith("Eingefügt — im Terminal mit Enter absenden")
     dialog.close()
-    # Der Text liegt in der Eingabezeile: ein Host zeigt ihn ganz (Shell) oder
-    # gekürzt als „Pasted text“ (Claude Code) — nie als Escape-Rest.
+    # Nur Shell: zsh zeigt den ganzen Text in der Eingabezeile (Bracketed
+    # Paste) und führt keine Zeile aus — kein „command not found“, keine
+    # Escape-Reste.
+    last = preview.splitlines()[-1]
     text = window.wait(
         "const t = window.__speccifyQa.terminalText() || '';"
-        f" return t.includes({preview.splitlines()[0]!r}) || /Pasted text/i.test(t) ? t : '';",
+        f" return t.includes({last!r}) ? t : '';",
         timeout=20,
     )
+    # zsh zeigt von einer Eingabe, die höher als das Terminal ist, nur das
+    # Ende und bricht Zeilen selbst um — geprüft wird der Schluss des Textes
+    # in Reihenfolge, ohne Leerraum.
+    tail = [_kompakt(line) for line in preview.splitlines()[-6:] if line.strip()]
+    kompakt = _kompakt(text)
+    positions = [kompakt.rfind(line) for line in tail]
+    assert all(pos >= 0 for pos in positions), (tail, text[-400:])
+    assert positions == sorted(positions)
+    assert "Projekt:" in text or len(preview.splitlines()) > 20, text[-400:]
     assert "[200~" not in text and "[201~" not in text
+    assert "command not found" not in text
     assert text != vorher
-    # Nichts abgeschickt: kein Spec-Workflow-Lauf, die Eingabe wartet weiter.
-    assert "Auftrag angenommen" not in text
 
 
 def test_kopieren_legt_die_vorschau_in_die_zwischenablage(zweites_fenster: ProjectWindow) -> None:
@@ -115,7 +140,14 @@ def test_kopieren_legt_die_vorschau_in_die_zwischenablage(zweites_fenster: Proje
     assert window.clipboard() == preview
 
 
-def test_geaenderte_datei_zeigt_hinweis_und_neuen_inhalt(zweites_fenster: ProjectWindow) -> None:
+def test_geaenderte_datei_zeigt_den_neuen_inhalt(zweites_fenster: ProjectWindow) -> None:
+    """Die Vorschau liest die Datei beim Öffnen — nie einen alten Stand.
+
+    Den Hinweis „seit der Auswahl geändert“ zeigt die App nur, wenn das Board
+    die Änderung noch nicht kennt; in der echten App holt der Datei-Watcher
+    das Board meist schneller nach, als ein Mensch klickt. Der Hinweis ist
+    deshalb Stufe 0 (Mock ohne Watcher), hier zählt der Inhalt.
+    """
     window = zweites_fenster
     file = _erste_doing_karte(window)
     window.board.select(file)
@@ -123,9 +155,11 @@ def test_geaenderte_datei_zeigt_hinweis_und_neuen_inhalt(zweites_fenster: Projec
     try:
         window.write_file(file, original.rstrip("\n") + "\n\nNachträglich geändert (QA).\n")
         dialog = window.board.open_handover()
-        statuses = dialog.statuses()
-        assert any("seit der Auswahl geändert" in s for s in statuses), statuses
         assert "Nachträglich geändert (QA)." in dialog.preview()
         dialog.close()
     finally:
         window.write_file(file, original)
+    window.board.select(file)
+    dialog = window.board.open_handover()
+    assert "Nachträglich geändert (QA)." not in dialog.preview()
+    dialog.close()

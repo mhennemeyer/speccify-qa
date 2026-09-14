@@ -17,7 +17,9 @@ from speccify_qa.bridge import Bridge, BridgeError
 
 # Gemeinsame DOM-Helfer, in jedes Skript eingebettet.
 _HELPERS = r"""
-function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
+// Nur Sichtbares zählt: die App hält inaktive Bereiche mit `hidden` im DOM.
+function visible(el) { return !!el && el.getClientRects().length > 0; }
+function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)).filter(visible); }
 function byRole(role, name, root) {
   const all = $$('[role="' + role + '"], ' + (role === 'button' ? 'button' : 'x-none'), root);
   return all.find(el => name === undefined || (el.getAttribute('aria-label') || el.textContent || '').trim() === name) || null;
@@ -62,6 +64,21 @@ class App:
             if window.root and window.root.resolve() == wanted:
                 return window
         return None
+
+    def close_window(self, label: str, *, timeout: float = 10.0) -> None:
+        """Fenster schließen, ohne auf eine Antwort zu warten (es verschwindet ja)."""
+        self.bridge.eval(
+            label,
+            "setTimeout(() => window.__TAURI_INTERNALS__.invoke('plugin:window|close'), 30); return true;",
+        )
+        import time
+
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if all(w["label"] != label for w in self.windows()):
+                return
+            time.sleep(0.2)
+        raise BridgeError(f"Fenster {label} wurde nicht geschlossen")
 
     def open_project(self, root: Path, *, timeout: float = 15.0) -> ProjectWindow:
         """Projektfenster öffnen (oder das vorhandene fokussieren) und zurückgeben."""
@@ -150,13 +167,20 @@ class Board:
         )
 
     def select(self, file: str) -> None:
-        """Karte anklicken (erste Schaltfläche = Auswahl in den Inspektor)."""
+        """Karte auswählen; ein Klick auf die gewählte Karte würde sie abwählen."""
         ok = self.window.eval(
             f"""const card = $$('[data-spec-card]').find(el => el.getAttribute('data-spec-card') === {json.dumps(file)});
-            if (!card) return false; (card.querySelector('button') || card).click(); return true;"""
+            if (!card) return false;
+            if (card.getAttribute('data-selected') !== 'true') (card.querySelector('button') || card).click();
+            return true;"""
         )
         if not ok:
             raise BridgeError(f"Spec-Karte {file} nicht gefunden")
+        # Liegt das Terminal rechts, verdeckt sein Tab den Inspektor — zurückschalten.
+        self.window.eval(
+            "const t = byRole('button', 'Inspektor');"
+            " if (t && t.getAttribute('aria-pressed') !== 'true') t.click(); return true;"
+        )
         self.window.wait("return !!byRole('button', 'Auftrag…');")
 
     def open_handover(self) -> HandoverDialog:
