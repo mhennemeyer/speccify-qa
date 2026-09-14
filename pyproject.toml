@@ -1,0 +1,45 @@
+[project]
+name = "speccify-qa"
+version = "0.1.0"
+description = "QA- und E2E-Werkzeug, von Agenten bedienbar, mit Oberfläche für Menschen — erster Zuschnitt: die Speccify-App prüfen"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Matthias Hennemeyer" }]
+dependencies = [
+    "httpx>=0.28",
+    "pytest>=8.3",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+speccify-qa = "speccify_qa.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest-playwright>=0.8.0",
+    "ruff>=0.9",
+]
+
+[build-system]
+requires = ["uv_build>=0.9"]
+build-backend = "uv_build"
+
+# Flaches Layout wie tec-e2e: Paket direkt in der Projektwurzel, uv als einzige Build-Abhängigkeit.
+[tool.uv.build-backend]
+module-name = "speccify_qa"
+module-root = ""
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "abnahme(name, stand=None): Test einer Abnahme; stand='erwartet' heißt: Umsetzung fehlt noch",
+    "smoke: Erreichbarkeit der Prüfziele — hier ist Erreichbarkeit die Aussage",
+    "stufe(n): Prüfstufe 0 (Mock), 1 (Verträge), 2 (echte App), 3 (Mensch)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

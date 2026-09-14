@@ -1,0 +1,20 @@
+# Einzige Wahrheit für Prüfziele und Adressen. Secrets stehen NICHT hier;
+# unter `secrets` steht nur, welche Namen eine Umgebung braucht (Werte aus
+# Umgebungsvariablen bzw. .env).
+default_environment: local
+
+environments:
+  local:
+    label: Lokal (gebündelte Speccify-App, Vite-Mock, Web-Board)
+    speccify:
+      # Checkout der Speccify-App — Quelle für Mock-UI und stand-und-ui.md
+      repo: ${SPECCIFY_REPO:-../speccify}
+      # Desktop-UI-MCP der laufenden App (ask_bo, show_ui, ui_result)
+      desktop_ui: http://127.0.0.1:18768
+      # Mock-UI des Desktop-Frontends (Vite-Dev-Server aus dem Speccify-Checkout)
+      mock: http://127.0.0.1:1421/dev/mock.html
+      # Web-Board-Dienst (Spec 032/033), optional
+      board: http://127.0.0.1:8790
+      board_mcp: http://127.0.0.1:8790/mcp
+    secrets:
+      - BOARD_MCP_TOKEN

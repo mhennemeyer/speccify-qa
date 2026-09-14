@@ -1,0 +1,9 @@
+name: speccify-011-auftrag
+titel: "Speccify Spec 011: Auftrag an den Agenten — Vorschau, Zustellung, Grenzen"
+bezug:
+  repo: mhennemeyer/speccify
+  spec: 011-auftragskontext
+  spec_datei: .agent/specs/011-auftragskontext/SPEC.md (Branch specs)
+angelegt: "2026-09-14"
+stufen: [0, 1, 2, 3]
+uebernommen: []

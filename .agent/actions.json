@@ -1,0 +1,5 @@
+[
+  {"name": "Unit-Tests", "command": ["uv", "run", "pytest", "tests/unit", "-q"], "description": "Abnahme-Modell und Umgebungen ohne laufende Systeme", "source": "project", "confirmed": true},
+  {"name": "Prüfziele", "command": ["uv", "run", "python", "-m", "speccify_qa.cli", "env", "--tools"], "description": "Erreichbarkeit der Speccify-Prüfziele und Tools des Desktop-UI-MCP", "source": "project", "confirmed": true},
+  {"name": "Abnahme 011 laufen lassen", "command": ["uv", "run", "python", "-m", "speccify_qa.cli", "abnahme", "run", "speccify-011-auftrag"], "description": "Automatische Stufen der ersten Abnahme (braucht Vite auf 1421)", "source": "project", "confirmed": true}
+]
