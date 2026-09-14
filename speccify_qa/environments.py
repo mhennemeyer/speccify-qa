@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +26,7 @@ class Environment:
     label: str
     speccify: dict[str, str]
     secrets: tuple[str, ...]
+    hints: dict[str, str] = field(default_factory=dict)
 
     def target(self, key: str) -> str:
         try:
@@ -54,6 +55,7 @@ def load_environments(path: Path | None = None) -> tuple[str, dict[str, Environm
             label=str(entry.get("label") or name),
             speccify=speccify,
             secrets=tuple(entry.get("secrets") or []),
+            hints={k: str(v) for k, v in (entry.get("hints") or {}).items()},
         )
     return str(raw.get("default_environment") or next(iter(environments), "local")), environments
 

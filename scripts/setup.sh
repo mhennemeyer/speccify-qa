@@ -9,3 +9,6 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 uv run playwright install chromium >/dev/null 2>&1 || echo "Playwright-Browser nicht installiert (offline?) — später: uv run playwright install chromium"
 uv run python -m speccify_qa.cli env
+echo
+echo "Nächster Schritt: uv run python -m speccify_qa.cli abnahme list"
+echo "Menschliche Checkliste: uv run python -m speccify_qa.cli abnahme checkliste <name>"

@@ -24,16 +24,32 @@ def _root(args: argparse.Namespace) -> Path:
 def cmd_env(args: argparse.Namespace) -> int:
     env = current_environment()
     print(f"Umgebung: {env.name} — {env.label}")
+    down: list[str] = []
     for key, value in env.speccify.items():
         state = ""
-        if key == "desktop_ui" or key == "board_mcp":
-            state = "  (erreichbar)" if mcp_reachable(value) else "  (nicht erreichbar)"
+        if key in {"desktop_ui", "board_mcp"}:
+            ok = mcp_reachable(value)
         elif key in {"mock", "board"}:
-            state = "  (erreichbar)" if reachable(value) else "  (nicht erreichbar)"
+            ok = reachable(value)
+        else:
+            ok = None
+        if ok is not None:
+            state = "  (erreichbar)" if ok else "  (nicht erreichbar)"
+            if not ok:
+                down.append(key)
         print(f"  {key}: {value}{state}")
     missing = env.missing_secrets()
     if missing:
-        print("  fehlende Secrets: " + ", ".join(missing))
+        print(
+            "  fehlende Secrets: "
+            + ", ".join(missing)
+            + "  (als Umgebungsvariable setzen; nie in Dateien)"
+        )
+    hints = [(key, env.hints[key]) for key in down if key in env.hints]
+    if hints:
+        print("Nicht erreichbare Ziele starten:")
+        for key, hint in hints:
+            print(f"  {key}: {hint}")
     if args.tools:
         try:
             print("  Desktop-UI-Tools: " + ", ".join(mcp_tools(env.target("desktop_ui"))))

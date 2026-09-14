@@ -21,3 +21,8 @@ def test_env_expansion(tmp_path: Path, monkeypatch) -> None:
     )
     _, environments = load_environments(tmp_path / "environments.yaml")
     assert environments["a"].speccify == {"repo": "/tmp/x", "mock": "http://m"}
+
+
+def test_hints_are_optional_and_loaded() -> None:
+    _, environments = load_environments()
+    assert "mock" in environments["local"].hints

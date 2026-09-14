@@ -18,3 +18,9 @@ environments:
       board_mcp: http://127.0.0.1:8790/mcp
     secrets:
       - BOARD_MCP_TOKEN
+    # Hinweise, wie ein nicht erreichbares Ziel gestartet wird (nur Text).
+    hints:
+      desktop_ui: gebündelte Speccify-App starten (im Speccify-Checkout ./scripts/dev.sh --app --prepared --skip-engine --ui-port=18768)
+      mock: im Speccify-Checkout unter apps/desktop `pnpm exec vite --port 1421 --strictPort --host 127.0.0.1` starten (nur für Mock-Abnahmen nötig)
+      board: Web-Board starten (Speccify-Checkout, apps/board `uv run speccify-board --config board.yaml`); optional
+      board_mcp: läuft mit dem Web-Board; braucht BOARD_MCP_TOKEN in der Umgebung; optional
