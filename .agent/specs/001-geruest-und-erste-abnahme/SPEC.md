@@ -3,7 +3,7 @@ station: Doing
 order: 1
 created: 2026-09-14
 needs_human: true
-ready: false
+ready: true
 open_question: null
 parent: null
 ---
@@ -41,7 +41,8 @@ QA-Brücke (003), Inventar (005).
 
 - [x] Gerüst: Paket, CLI, Umgebungen, Adapter, Tests, Speccify-Setup, Playbook.
 - [x] Abnahme `speccify-011-auftrag`: plan, abnahme, checkliste, Mock-Test.
-- [ ] Erste Durchführung durch den BO: Checkliste erfassen, Dauer und Befunde in `abnahme.md` nachtragen.
+- [x] Erste Durchführung durch den BO: Checkliste erfassen, Dauer und Befunde in `abnahme.md` nachtragen.
+      2026-09-14: Checkliste 2/2 ja, Tests 6/6 grün; Durchführung in `abnahme.md`.
       Seit Spec 003 nur noch zwei manuelle Schritte (Optik, Shell-Modus); der Rest läuft als Tests (6/6 grün).
 - [x] Befunde als Specs im Speccify-Repo anlegen (falls welche).
       Ein Befund (F-QA-1, Zustellung in Claudes Trust-Dialog) steht in Speccify Spec 011 unter Verification; BO entscheidet, ob daraus eine Spec wird.

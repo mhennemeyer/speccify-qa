@@ -24,6 +24,14 @@ schließen es wieder; im Speccify-Fenster wird nichts zugestellt.
   Board/Playbooks/Skills/Tools/Agent-Tabs, Git-Tab, Skill-Import.
 - Hosts: Claude Code (Bracketed Paste im TUI), zsh ≥ 5.1.
 
+## Durchführung
+
+- 2026-09-14, Prüfer Matthias: Stufe 0 + Stufe 2 automatisch 6/6 grün
+  (~5 s), Checkliste 2/2 ja (Claude nimmt den Auftrag als Block, Shell zeigt
+  den Text ohne Ausführung). Bestanden. Befund F-QA-1 in Speccify Spec 011.
+- Vergleich: vor dem Werkzeug fünf manuelle Klickschritte per Chat-Anleitung;
+  jetzt zwei manuelle Fragen plus ein Kommando.
+
 ## Erfolgsmaß für das Werkzeug
 
 Dauer der Abnahme, Zahl der Befunde, Fehlalarme; Vergleich mit der
