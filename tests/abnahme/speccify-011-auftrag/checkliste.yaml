@@ -1,38 +1,19 @@
+# Menschliche Prüfschritte (Stufe 3) — nur, was Tests nicht sehen können:
+# Optik und der Shell-Modus, der von der Agent-Einstellung des Fensters abhängt.
 schritte:
   - id: 1
     stufe: 3
     text: >-
-      Projektfenster Speccify, Claude im Terminal. Spec anklicken → „Auftrag…“.
+      Projektfenster Speccify mit Claude im Terminal, Spec anklicken → „Auftrag…“ →
+      „Ins Terminal einfügen“.
     erwartung: >-
-      Vorschau beginnt mit „Projekt: …“, nennt Spec mit Nummer und Station, Dateipfad,
-      „Auftrag: Arbeite diese Spec …“, Regelverweis, Datei als Markdown-Block; rechts oben
-      „Agent-Terminal bereit“. „Prüfen“ wechselt zu „Prüfe diese Spec gegen ihre Acceptance-Punkte“.
+      Das Terminal kommt sichtbar nach vorn, der Text steht als ein Block in Claudes
+      Eingabezeile, nichts ist abgeschickt; nach Enter beginnt Claude mit dem Auftrag
+      und kennt Projekt, Spec und Inhalt.
   - id: 2
-    stufe: 3
-    text: >-
-      „Ins Terminal einfügen“ klicken, dann Enter im Terminal.
-    erwartung: >-
-      Meldung „Eingefügt — im Terminal mit Enter absenden“, Terminal vorn, ganzer Text als ein
-      Block in Claudes Eingabezeile, nichts abgeschickt; nach Enter beginnt Claude mit dem
-      Auftrag und kennt Projekt, Spec und Inhalt.
-  - id: 3
-    stufe: 3
-    text: >-
-      Zweites Projektfenster ohne Terminal → „Auftrag…“ → „Ins Terminal einfügen“,
-      dann „Terminal starten“.
-    erwartung: >-
-      Gelbe Meldung „Kein Agent-Terminal bereit“ mit „Kopieren“ und „Terminal starten“; im
-      ersten Fenster kommt nichts an; nach dem Start zeigt die Vorschau „Agent-Terminal bereit“.
-  - id: 4
-    stufe: 3
-    text: >-
-      Spec auswählen, im Editor ändern und speichern, ohne Auswahlwechsel „Auftrag…“ öffnen.
-    erwartung: >-
-      Hinweis „Die Datei hat sich seit der Auswahl geändert“, Vorschau zeigt den neuen Inhalt.
-  - id: 5
     stufe: 3
     text: >-
       Terminal mit „Nur Shell“ starten, Auftrag einfügen.
     erwartung: >-
-      Mehrzeiliger Text steht in der zsh-Eingabezeile, keine Zeile wurde ausgeführt, keine
-      Escape-Zeichen sichtbar.
+      Mehrzeiliger Text steht in der zsh-Eingabezeile, keine Zeile wurde ausgeführt,
+      keine Escape-Zeichen sichtbar.

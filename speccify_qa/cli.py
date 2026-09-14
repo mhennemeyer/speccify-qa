@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 from speccify_qa import abnahme as ab
+from speccify_qa.bridge import Bridge
 from speccify_qa.environments import current_environment
 from speccify_qa.speccify import mcp_reachable, mcp_tools, reachable
 
@@ -31,6 +32,9 @@ def cmd_env(args: argparse.Namespace) -> int:
             ok = mcp_reachable(value)
         elif key in {"mock", "board"}:
             ok = reachable(value)
+        elif key == "qa_bridge":
+            bridge = Bridge.from_env()
+            ok = bool(bridge and bridge.alive())
         else:
             ok = None
         if ok is not None:

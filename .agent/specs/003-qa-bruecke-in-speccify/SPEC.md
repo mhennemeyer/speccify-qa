@@ -1,5 +1,5 @@
 ---
-station: Backlog
+station: Doing
 order: 3
 created: 2026-09-14
 needs_human: true
@@ -33,12 +33,17 @@ Abnahme 011 bekommt Stufe-2-Tests, die Checkliste schrumpft.
 ## Decisions
 
 - D1 (2026-09-14): JS-Ausführung über Tauri (`eval`) statt WebDriver; Ergebnis über einen eigenen Rückkanal.
+- D2 (2026-09-14, BO): Brücke nie im Normalbetrieb; Checkliste nur für Optik und nicht Automatisierbares.
+- D3 (2026-09-14): Token über Discovery-Datei `<tmp>/speccify-qa-bridge.json`, weil `open` auf macOS keine Umgebung vererbt.
 
 ## Tasks
 
-- [ ] Spec im Speccify-Repo anlegen (auf Ansage) und Vertrag abstimmen.
-- [ ] Adapter und Page-Objects hier.
+- [x] Spec im Speccify-Repo anlegen (auf Ansage) und Vertrag abstimmen.
+      Speccify Spec 039, Vertrag in `docs/qa-bridge.md` dort.
+- [x] Adapter und Page-Objects hier.
+      `speccify_qa/bridge.py`, `speccify_qa/pages.py`, Fixtures `bridge`/`app`/`speccify_window`.
 - [ ] Abnahme 011 auf Stufe 2 heben; Kennzahl vorher/nachher.
+      Fünf Tests in `test_auftrag_app.py`, Checkliste auf zwei Schritte gekürzt; Lauf gegen die App steht aus (Systemdialog).
 
 ## Verification
 

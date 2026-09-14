@@ -1,1 +1,2 @@
 {"timestamp": "2026-09-14T08:30:00Z", "spec_id": "003-qa-bruecke-in-speccify", "event_type": "spec_created", "actor": "project", "summary": "Angelegt beim Aufsetzen von speccify-qa (BO-Auftrag 2026-09-14)"}
+{"timestamp":"2026-09-14T09:40:00Z","spec_id":"003-qa-bruecke","event_type":"station_changed","actor":"project","summary":"Backlog → Doing (BO: Abnahmen automatisiert statt Checkliste)"}

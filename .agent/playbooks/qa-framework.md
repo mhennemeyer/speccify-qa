@@ -102,8 +102,13 @@ Stufe 3, weniger Dauer, keine Fehlalarme.
 
 ## Offene Entscheidungen
 
-- D-QA-01: QA-Brücke in Speccify (Flag, JS-Ausführung im Fenster,
-  Screenshot-Weg auf macOS) — Spec 003.
+- D-QA-01 (entschieden 2026-09-14, BO): QA-Brücke in Speccify (Spec 039 dort):
+  Loopback-HTTP nur mit `--qa-bridge=<port>`, Bearer-Token aus
+  `<tmp>/speccify-qa-bridge.json`, `eval`/`invoke`/Fenster/Screenshot; hier
+  Adapter `speccify_qa.bridge` und Page-Objects `speccify_qa.pages`. Die
+  Brücke ist nie im Normalbetrieb aktiv. Menschliche Checklisten nur für
+  Optik und technisch nicht Automatisierbares; alles andere sind Tests
+  (tec-e2e-Muster).
 - D-QA-02: Mensch-UI als eigene Tauri-App (tec-e2e-Muster) oder als
   Web-Board-Erweiterung.
 - D-QA-03: Inventar für Speccify: Tauri-Commands, MCP-Tools, UI-Baum aus

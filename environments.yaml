@@ -16,6 +16,9 @@ environments:
       # Web-Board-Dienst (Spec 032/033), optional
       board: http://127.0.0.1:8790
       board_mcp: http://127.0.0.1:8790/mcp
+      # QA-Brücke der App (Speccify Spec 039): nur mit --qa-bridge=<port> aktiv;
+      # Token kommt aus <tmp>/speccify-qa-bridge.json oder SPECCIFY_QA_TOKEN.
+      qa_bridge: http://127.0.0.1:18769
     secrets:
       - BOARD_MCP_TOKEN
     # Hinweise, wie ein nicht erreichbares Ziel gestartet wird (nur Text).
@@ -24,3 +27,4 @@ environments:
       mock: im Speccify-Checkout unter apps/desktop `pnpm exec vite --port 1421 --strictPort --host 127.0.0.1` starten (nur für Mock-Abnahmen nötig)
       board: Web-Board starten (Speccify-Checkout, apps/board `uv run speccify-board --config board.yaml`); optional
       board_mcp: läuft mit dem Web-Board; braucht BOARD_MCP_TOKEN in der Umgebung; optional
+      qa_bridge: gebündelte App mit Brücke starten (Speccify-Checkout ./scripts/dev.sh --app --prepared --skip-engine --ui-port=18768 --qa-bridge=18769); nötig für Stufe-2-Abnahmen
