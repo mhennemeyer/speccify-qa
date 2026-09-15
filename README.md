@@ -28,3 +28,7 @@ Eine **Abnahme** ist ein Ordner je Vorhaben unter `tests/abnahme/<name>/`
 mit `plan.md`, `abnahme.md`, `checkliste.yaml`, `test_*.py` und `ergebnis.json`.
 Die erste: `speccify-011-auftrag` — sie misst zugleich, was das Werkzeug
 gegenüber einer Klick-Anleitung im Chat bringt.
+
+## Lizenz
+
+speccify-qa ist Open Source unter der [MIT-Lizenz](LICENSE).
